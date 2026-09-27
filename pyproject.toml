@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "usbguard-desktop"
+version = "0.1.0"
+description = "A simple desktop interface for managing USB device access with USBGuard."
+requires-python = ">=3.12"
+license = {text = "GPL-3.0-or-later"}
+authors = [{name = "Yuma Obata"}]
+readme = "README.md"
+
+[project.scripts]
+usb-protection = "usb_protection.application:main"
+usb-protection-agent = "usb_protection.agent.application:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
