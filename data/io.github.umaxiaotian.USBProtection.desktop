@@ -1,7 +1,15 @@
 [Desktop Entry]
 Type=Application
 Name=USB Protection
+Name[ja]=USB プロテクション
+Name[ko]=USB 보호
+Name[zh_CN]=USB 保护
+Name[es]=Protección USB
 Comment=Manage USB device access
+Comment[ja]=USB デバイスのアクセスを管理します
+Comment[ko]=USB 장치 접근 관리
+Comment[zh_CN]=管理 USB 设备访问权限
+Comment[es]=Gestionar el acceso de dispositivos USB
 Exec=usb-protection
 Icon=io.github.umaxiaotian.USBProtection
 Terminal=false

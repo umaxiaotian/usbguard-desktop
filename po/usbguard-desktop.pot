@@ -1,0 +1,467 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the USB Protection package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: USB Protection 0.1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/umaxiaotian/usbguard-desktop/"
+"issues\n"
+"POT-Creation-Date: 2026-09-27 23:06+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/usb_protection/agent/application.py:56
+msgid ""
+"Device notifications are disconnected. Open USB Protection to check status."
+msgstr ""
+
+#: src/usb_protection/agent/application.py:111
+msgid "A USB device reported invalid details. Open USB Protection to refresh."
+msgstr ""
+
+#: src/usb_protection/agent/application.py:114
+msgid "New USB Device"
+msgstr ""
+
+#: src/usb_protection/agent/application.py:116
+#, python-brace-format
+msgid ""
+"{name}\n"
+"{kind}\n"
+"Blocked until you choose what to do."
+msgstr ""
+
+#: src/usb_protection/agent/application.py:122
+#: src/usb_protection/ui/device_page.py:26
+msgid "Allow Once"
+msgstr ""
+
+#: src/usb_protection/agent/application.py:125
+#: src/usb_protection/ui/device_page.py:27
+msgid "Always Allow"
+msgstr ""
+
+#: src/usb_protection/agent/application.py:140
+msgid "USB Protection needs attention"
+msgstr ""
+
+#: src/usb_protection/agent/application.py:153
+msgid "The notification agent must run in a user session, not as root."
+msgstr ""
+
+#: src/usb_protection/agent/notifications.py:46
+msgid "USB Protection restarted. Use the current device list."
+msgstr ""
+
+#: src/usb_protection/application.py:27
+#, python-brace-format
+msgid "Could not start notifications: {error}"
+msgstr ""
+
+#: src/usb_protection/application.py:35
+msgid "USB Protection must run in your user session, not as root."
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:36
+msgid "Configuration must be a root-owned, non-writable regular file."
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:44
+msgid "The policy is empty. Protection was not started."
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:58
+#: src/usb_protection/services/bootstrap.py:78
+msgid "A policy already exists. It has not been changed."
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:72
+msgid "Generated policy failed ownership, permission or empty-file checks."
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:110
+msgid "Existing custom USBGuard configuration needs administrator review."
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:114
+msgid "Additional rules already exist. They have not been changed."
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:119
+msgid "A custom policy location requires administrator review."
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:158
+msgid "Expected one of: initialize, enable, disable, status"
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:161
+msgid "Administrator authorization is required."
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:175
+msgid "The policy directory is not secure."
+msgstr ""
+
+#: src/usb_protection/services/bootstrap.py:194
+msgid "Initial policy must trust currently connected devices."
+msgstr ""
+
+#: src/usb_protection/services/protection.py:36
+msgid "Authorization was cancelled or the operation failed."
+msgstr ""
+
+#: src/usb_protection/services/protection.py:95
+#: src/usb_protection/usbguard/device.py:33
+msgid "USB device"
+msgstr ""
+
+#: src/usb_protection/ui/device_page.py:9
+msgid "Status"
+msgstr ""
+
+#: src/usb_protection/ui/device_page.py:14
+msgid "Access"
+msgstr ""
+
+#: src/usb_protection/ui/device_page.py:17
+msgid ""
+"Allow Once lasts for this connection. Existing persistent rules still apply "
+"on reconnect. Block affects this connection; forget an allow rule to stop "
+"trusting future connections."
+msgstr ""
+
+#: src/usb_protection/ui/device_page.py:25
+#: src/usb_protection/ui/device_page.py:63
+msgid "Block"
+msgstr ""
+
+#: src/usb_protection/ui/device_page.py:58
+msgid "Block this device?"
+msgstr ""
+
+#: src/usb_protection/ui/device_page.py:60
+msgid ""
+"Blocking a keyboard, mouse, network adapter or USB hub may interrupt your "
+"access to this computer."
+msgstr ""
+
+#: src/usb_protection/ui/device_page.py:69
+msgid "Apply"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:7 src/usb_protection/ui/window.py:136
+msgid "Rules"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:8
+msgid "Loading rules…"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:19
+msgid ""
+"Rules are evaluated in the order shown. Forgetting a rule does not change "
+"devices already connected."
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:23
+msgid "No saved rules."
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:25
+msgid "Saved Rules"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:30
+#: src/usb_protection/usbguard/device.py:39
+msgid "Device ID"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:30
+msgid "Custom matching rule"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:32
+msgid "Advanced"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:33
+msgid "USBGuard rule"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:35
+msgid "Remove saved decision"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:50
+msgid "Forget this rule?"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:52
+msgid ""
+"Future connections will follow the remaining rules. Currently connected "
+"devices keep their current access."
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:55
+msgid "Forget"
+msgstr ""
+
+#: src/usb_protection/ui/rules_page.py:59
+msgid "Forget Rule"
+msgstr ""
+
+#: src/usb_protection/ui/setup_page.py:9
+msgid "Welcome to USB Protection"
+msgstr ""
+
+#: src/usb_protection/ui/setup_page.py:12
+msgid ""
+"Before protection is enabled, all devices connected at that moment will be "
+"trusted. Unplug devices you do not trust, and keep your keyboard and mouse "
+"connected."
+msgstr ""
+
+#: src/usb_protection/ui/setup_page.py:20
+msgid "Ready to protect this computer?"
+msgstr ""
+
+#: src/usb_protection/ui/setup_page.py:21
+msgid "Enable USB Protection"
+msgstr ""
+
+#: src/usb_protection/ui/widgets.py:26
+msgid "Cancel"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:16 src/usb_protection/ui/window.py:80
+msgid "USB Protection"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:29
+msgid "Refresh"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:72
+msgid "USBGuard is not installed."
+msgstr ""
+
+#: src/usb_protection/ui/window.py:73
+msgid "Please reinstall USB Protection."
+msgstr ""
+
+#: src/usb_protection/ui/window.py:79
+msgid "Protection"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:82
+msgid "On"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:82
+msgid "USB Protection is currently disabled."
+msgstr ""
+
+#: src/usb_protection/ui/window.py:88
+msgid "Unable to read service state"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:93
+msgid "USBGuard connection unavailable"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:93
+msgid "Protection service is running."
+msgstr ""
+
+#: src/usb_protection/ui/window.py:95
+msgid "Reconnect"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:99
+msgid "New devices"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:100
+msgid "Ask — blocked until you allow them, unless a saved rule applies."
+msgstr ""
+
+#: src/usb_protection/ui/window.py:107
+msgid "Unable to read the existing default policy."
+msgstr ""
+
+#: src/usb_protection/ui/window.py:111
+#, python-brace-format
+msgid "Existing configuration: {value}. Your policy has been preserved."
+msgstr ""
+
+#: src/usb_protection/ui/window.py:116
+msgid "Connected Devices"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:123
+msgid "Could not load devices"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:126
+msgid "No connected USB devices"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:136
+msgid "Manage saved device decisions"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:152
+msgid "Turn off USB Protection?"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:154
+msgid ""
+"New USB devices will no longer be managed by USB Protection. Depending on "
+"your existing configuration, blocked devices may remain unavailable until "
+"you reconnect them or restart the computer."
+msgstr ""
+
+#: src/usb_protection/ui/window.py:158
+msgid "Turn Off"
+msgstr ""
+
+#: src/usb_protection/ui/window.py:174
+msgid "Protection updated"
+msgstr ""
+
+#: src/usb_protection/usbguard/client.py:81
+msgid "USBGuard is unavailable. Enable protection first."
+msgstr ""
+
+#: src/usb_protection/usbguard/client.py:91
+msgid "USBGuard restarted. Refresh and try again."
+msgstr ""
+
+#: src/usb_protection/usbguard/client.py:136
+msgid "Invalid setting response from USBGuard."
+msgstr ""
+
+#: src/usb_protection/usbguard/client.py:146
+msgid "Unknown device action."
+msgstr ""
+
+#: src/usb_protection/usbguard/client.py:157
+msgid "The device changed or disappeared. Refresh and retry."
+msgstr ""
+
+#: src/usb_protection/usbguard/client.py:176
+msgid "Invalid action response from USBGuard."
+msgstr ""
+
+#: src/usb_protection/usbguard/client.py:188
+msgid "The rule changed. Refresh and try again."
+msgstr ""
+
+#: src/usb_protection/usbguard/device.py:28
+msgid "Keyboard, mouse or other input device"
+msgstr ""
+
+#: src/usb_protection/usbguard/device.py:30
+msgid "USB storage"
+msgstr ""
+
+#: src/usb_protection/usbguard/device.py:32
+msgid "USB hub"
+msgstr ""
+
+#: src/usb_protection/usbguard/device.py:37
+msgid "Unknown"
+msgstr ""
+
+#: src/usb_protection/usbguard/device.py:40
+msgid "Serial"
+msgstr ""
+
+#: src/usb_protection/usbguard/device.py:41
+msgid "Port"
+msgstr ""
+
+#: src/usb_protection/usbguard/device.py:42
+msgid "Interfaces"
+msgstr ""
+
+#: src/usb_protection/usbguard/device.py:43
+msgid "Fingerprint"
+msgstr ""
+
+#: src/usb_protection/usbguard/errors.py:12
+msgid "Permission was not granted. You can try again."
+msgstr ""
+
+#: src/usb_protection/usbguard/errors.py:14
+msgid "USB Protection did not respond in time. Please try again."
+msgstr ""
+
+#: src/usb_protection/usbguard/errors.py:16
+msgid "The device or rule is no longer available. Refresh and try again."
+msgstr ""
+
+#: src/usb_protection/usbguard/errors.py:18
+msgid "USBGuard is unavailable. Check that protection is enabled."
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:37
+msgid "Invalid rule identifier in USBGuard response."
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:39
+msgid "Invalid rule in USBGuard response."
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:43
+msgid "Empty rule in USBGuard response."
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:54
+msgid "Malformed rule in USBGuard response."
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:78
+msgid "Unknown device"
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:83
+msgid "Allowed"
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:83
+msgid "Blocked"
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:83
+msgid "Rejected"
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:84
+msgid "Custom rule"
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:93
+msgid "Invalid USBGuard response."
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:96
+msgid "Invalid USBGuard device list."
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:101
+msgid "Invalid USBGuard list entry."
+msgstr ""
+
+#: src/usb_protection/usbguard/rule.py:104
+msgid "Duplicate identifier in USBGuard response."
+msgstr ""

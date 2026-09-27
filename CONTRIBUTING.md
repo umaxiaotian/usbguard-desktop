@@ -15,6 +15,11 @@ Do not implement a second policy engine. Rule parsing in Python is only for
 presentation. Bootstrap syntax validation must use USBGuard's own parser.
 Changes to privileged code require tests for failure paths and no-clobber writes.
 
+User-facing Python text must use `usb_protection.i18n._`. Update all required
+catalogs in `po/`, run `./po/update-pot.sh`, and preserve named placeholders
+such as `{name}`. Desktop and AppStream strings have their localized forms in
+the source metadata. Run `msgfmt --check --check-format po/*.po` before review.
+
 Submit focused conventional commits. Do not include tokens, device serial
 numbers, personal policies or authentication material in issues or screenshots.
 

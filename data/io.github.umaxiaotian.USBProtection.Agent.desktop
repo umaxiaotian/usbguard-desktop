@@ -1,7 +1,15 @@
 [Desktop Entry]
 Type=Application
 Name=USB Protection Notifications
+Name[ja]=USB プロテクション通知
+Name[ko]=USB 보호 알림
+Name[zh_CN]=USB 保护通知
+Name[es]=Notificaciones de Protección USB
 Comment=Notify about blocked USB devices
+Comment[ja]=ブロックされた USB デバイスを通知します
+Comment[ko]=차단된 USB 장치 알림
+Comment[zh_CN]=通知被阻止的 USB 设备
+Comment[es]=Notificar sobre dispositivos USB bloqueados
 Exec=usb-protection-agent
 Icon=io.github.umaxiaotian.USBProtection
 Terminal=false

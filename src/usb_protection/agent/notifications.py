@@ -2,6 +2,8 @@
 
 import uuid
 
+from ..i18n import _
+
 
 class NotificationRouter:
     def __init__(self, client, send, withdraw):
@@ -41,7 +43,7 @@ class NotificationRouter:
         owner, device = self.pending[token]
         if owner != self.client.owner:
             self.clear()
-            callback(None, "USB Protection restarted. Use the current device list.")
+            callback(None, _("USB Protection restarted. Use the current device list."))
             return
         if action not in {"allow-once", "always-allow"}:
             return

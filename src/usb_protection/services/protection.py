@@ -5,6 +5,8 @@ from pathlib import Path
 
 from gi.repository import Gio, GLib
 
+from ..i18n import _
+
 HELPER = "/usr/libexec/usbguard-desktop-bootstrap"
 
 
@@ -31,7 +33,7 @@ class ProtectionService:
                         None
                         if source.get_successful()
                         else error.strip()
-                        or "Authorization was cancelled or the operation failed.",
+                        or _("Authorization was cancelled or the operation failed."),
                     )
             except GLib.Error as exc:
                 if not self.closed:
@@ -90,7 +92,7 @@ def connected_preview():
             name = (device / "product").read_text().strip() if (device / "product").exists() else ""
             vendor = (device / "idVendor").read_text().strip()
             product = (device / "idProduct").read_text().strip()
-            devices.append((name or "USB device", f"{vendor}:{product}"))
+            devices.append((name or _("USB device"), f"{vendor}:{product}"))
         except OSError:
             continue  # Hot unplug during enumeration.
     return devices

@@ -2,6 +2,7 @@
 
 from gi.repository import Gio, GLib
 
+from ..i18n import _
 from .device import Device
 from .enums import Target
 from .errors import USBGuardError, friendly_error
@@ -77,7 +78,7 @@ class USBGuardClient:
             return
         proxy = self.proxies.get(endpoint)
         if proxy is None or not proxy.get_name_owner():
-            callback(None, USBGuardError("USBGuard is unavailable. Enable protection first."))
+            callback(None, USBGuardError(_("USBGuard is unavailable. Enable protection first.")))
             return
         owner = proxy.get_name_owner()
 
@@ -87,7 +88,7 @@ class USBGuardClient:
             try:
                 response = source.call_finish(result).unpack()
                 if source.get_name_owner() != owner:
-                    raise USBGuardError("USBGuard restarted. Refresh and try again.")
+                    raise USBGuardError(_("USBGuard restarted. Refresh and try again."))
                 value = parser(response)
             except (GLib.Error, USBGuardError, TypeError, ValueError, IndexError) as exc:
                 callback(None, friendly_error(exc))
@@ -132,7 +133,7 @@ class USBGuardClient:
     @staticmethod
     def _parameter(value):
         if not isinstance(value, tuple) or len(value) != 1 or not isinstance(value[0], str):
-            raise USBGuardError("Invalid setting response from USBGuard.")
+            raise USBGuardError(_("Invalid setting response from USBGuard."))
         return value[0]
 
     def apply(self, device, action, callback, expected_owner=None):
@@ -142,7 +143,7 @@ class USBGuardClient:
             "block": (Target.BLOCK, False),
         }
         if action not in options:
-            callback(None, USBGuardError("Unknown device action."))
+            callback(None, USBGuardError(_("Unknown device action.")))
             return
         owner = expected_owner or self.owner
 
@@ -153,7 +154,7 @@ class USBGuardClient:
             current = next((d for d in devices if d.id == device.id), None)
             if self.owner != owner or current is None or current.identity != device.identity:
                 callback(
-                    None, USBGuardError("The device changed or disappeared. Refresh and retry.")
+                    None, USBGuardError(_("The device changed or disappeared. Refresh and retry."))
                 )
                 return
             target, permanent = options[action]
@@ -172,7 +173,7 @@ class USBGuardClient:
     @staticmethod
     def _rule_id(value):
         if len(value) != 1 or type(value[0]) is not int or not 0 <= value[0] < 2**32:
-            raise USBGuardError("Invalid action response from USBGuard.")
+            raise USBGuardError(_("Invalid action response from USBGuard."))
         return value[0]
 
     def forget(self, rule, callback, expected_owner=None):
@@ -184,7 +185,7 @@ class USBGuardClient:
             elif self.owner != owner or not any(
                 r.id == rule.id and r.raw == rule.raw for r in rules
             ):
-                callback(None, USBGuardError("The rule changed. Refresh and try again."))
+                callback(None, USBGuardError(_("The rule changed. Refresh and try again.")))
             else:
                 self._call("policy", "removeRule", "(u)", (rule.id,), callback, interactive=True)
 

@@ -1,3 +1,4 @@
+from ..i18n import _
 from .widgets import Adw, Gtk, button, confirm, detail_window, row
 
 
@@ -5,24 +6,25 @@ def show_device(parent, device):
     owner = parent.client.owner
     window, page = detail_window(parent, device.name)
     info = Adw.PreferencesGroup(title=device.name, description=device.kind)
-    info.add(row("Status", device.rule.status))
+    info.add(row(_("Status"), device.rule.status))
     for title, value in device.metadata():
         info.add(row(title, value))
     page.add(info)
     access = Adw.PreferencesGroup(
-        title="Access",
+        title=_("Access"),
         description=(
-            "Allow Once lasts for this connection. "
-            "Existing persistent rules still apply on reconnect. "
-            "Block affects this connection; forget an allow rule "
-            "to stop trusting future connections."
+            _(
+                "Allow Once lasts for this connection. Existing persistent rules still apply "
+                "on reconnect. Block affects this connection; forget an allow rule to stop "
+                "trusting future connections."
+            )
         ),
     )
     choices = []
     for label, action in [
-        ("Block", "block"),
-        ("Allow Once", "allow-once"),
-        ("Always Allow", "always-allow"),
+        (_("Block"), "block"),
+        (_("Allow Once"), "allow-once"),
+        (_("Always Allow"), "always-allow"),
     ]:
         choice = Gtk.CheckButton(label=label)
         if choices:
@@ -53,16 +55,18 @@ def show_device(parent, device):
         if selected == "block":
             confirm(
                 window,
-                "Block this device?",
-                "Blocking a keyboard, mouse, network adapter or USB hub may interrupt "
-                "your access to this computer.",
-                "Block",
+                _("Block this device?"),
+                _(
+                    "Blocking a keyboard, mouse, network adapter or USB hub may interrupt "
+                    "your access to this computer."
+                ),
+                _("Block"),
                 perform,
             )
         else:
             perform()
 
-    apply_button = button("Apply", apply)
+    apply_button = button(_("Apply"), apply)
     access.add(apply_button)
     window.present()
     return window

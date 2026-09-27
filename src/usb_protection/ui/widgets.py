@@ -1,5 +1,7 @@
 import gi
 
+from ..i18n import _
+
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Adw, Gtk  # noqa: E402
@@ -21,7 +23,7 @@ def button(label, callback, destructive=False):
 def confirm(parent, heading, body, label, callback):
     # MessageDialog is supported by the Ubuntu 24.04 Libadwaita 1.5 baseline.
     dialog = Adw.MessageDialog(transient_for=parent, modal=True, heading=heading, body=body)
-    dialog.add_response("cancel", "Cancel")
+    dialog.add_response("cancel", _("Cancel"))
     dialog.add_response("confirm", label)
     dialog.set_response_appearance("confirm", Adw.ResponseAppearance.DESTRUCTIVE)
     dialog.set_default_response("cancel")

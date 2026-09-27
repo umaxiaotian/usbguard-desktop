@@ -17,7 +17,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y debhelper dh-python pybuild-plugin-pyproject python3-all \
             python3-setuptools python3-build python3-installer python3-pytest python3-gi \
-            gir1.2-gtk-4.0 gir1.2-adw-1 lintian appstream desktop-file-utils xvfb dbus-x11
+            gir1.2-gtk-4.0 gir1.2-adw-1 gettext lintian appstream desktop-file-utils xvfb dbus-x11
           python -m pip install ruff build
       - name: Lint
         run: |

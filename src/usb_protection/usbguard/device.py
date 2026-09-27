@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from ..i18n import _
 from .rule import Rule, clean_text
 
 
@@ -24,21 +25,21 @@ class Device:
     def kind(self):
         interfaces = self.rule.attributes.get("with-interface", "")
         if "03:" in interfaces:
-            return "Keyboard, mouse or other input device"
+            return _("Keyboard, mouse or other input device")
         if "08:" in interfaces:
-            return "USB storage"
+            return _("USB storage")
         if "09:" in interfaces:
-            return "USB hub"
-        return "USB device"
+            return _("USB hub")
+        return _("USB device")
 
     def metadata(self):
         return [
-            (label, clean_text(self.rule.attributes.get(key, "")) or "Unknown")
+            (label, clean_text(self.rule.attributes.get(key, "")) or _("Unknown"))
             for label, key in (
-                ("Device ID", "id"),
-                ("Serial", "serial"),
-                ("Port", "via-port"),
-                ("Interfaces", "with-interface"),
-                ("Fingerprint", "hash"),
+                (_("Device ID"), "id"),
+                (_("Serial"), "serial"),
+                (_("Port"), "via-port"),
+                (_("Interfaces"), "with-interface"),
+                (_("Fingerprint"), "hash"),
             )
         ]

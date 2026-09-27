@@ -5,7 +5,15 @@
   <vendor_url>https://github.com/umaxiaotian/usbguard-desktop</vendor_url>
   <action id="io.github.umaxiaotian.USBProtection.bootstrap">
     <description>Configure USB Protection</description>
+    <description xml:lang="ja">USB プロテクションを設定</description>
+    <description xml:lang="ko">USB 보호 설정</description>
+    <description xml:lang="zh-CN">配置 USB 保护</description>
+    <description xml:lang="es">Configurar Protección USB</description>
     <message>Authentication is required to set up or change USB protection</message>
+    <message xml:lang="ja">USB プロテクションの設定または変更には認証が必要です</message>
+    <message xml:lang="ko">USB 보호를 설정하거나 변경하려면 인증이 필요합니다</message>
+    <message xml:lang="zh-CN">设置或更改 USB 保护需要身份验证</message>
+    <message xml:lang="es">Se requiere autenticación para configurar o cambiar la protección USB</message>
     <icon_name>io.github.umaxiaotian.USBProtection</icon_name>
     <defaults>
       <allow_any>no</allow_any>

@@ -4,6 +4,7 @@ import sys
 from gi.repository import Gio, GLib
 
 from .. import AGENT_ID
+from ..i18n import _
 from ..usbguard.client import USBGuardClient
 from ..usbguard.device import Device
 from ..usbguard.errors import USBGuardError
@@ -52,7 +53,7 @@ class Agent(Gio.Application):
         self.router.clear()
         if not owner:
             self.error(
-                "Device notifications are disconnected. Open USB Protection to check status."
+                _("Device notifications are disconnected. Open USB Protection to check status.")
             )
         self.poll()
 
@@ -107,17 +108,21 @@ class Agent(Gio.Application):
                 else:
                     self.router.remove(identifier)
         except (USBGuardError, TypeError, ValueError):
-            self.error("A USB device reported invalid details. Open USB Protection to refresh.")
+            self.error(_("A USB device reported invalid details. Open USB Protection to refresh."))
 
     def notify_device(self, token, device):
-        notification = Gio.Notification.new("New USB Device")
-        notification.set_body(f"{device.name}\n{device.kind}\nBlocked until you choose what to do.")
+        notification = Gio.Notification.new(_("New USB Device"))
+        notification.set_body(
+            _("{name}\n{kind}\nBlocked until you choose what to do.").format(
+                name=device.name, kind=device.kind
+            )
+        )
         notification.set_icon(Gio.ThemedIcon.new("io.github.umaxiaotian.USBProtection"))
         notification.add_button_with_target_value(
-            "Allow Once", "app.allow-once", GLib.Variant("s", token)
+            _("Allow Once"), "app.allow-once", GLib.Variant("s", token)
         )
         notification.add_button_with_target_value(
-            "Always Allow", "app.always-allow", GLib.Variant("s", token)
+            _("Always Allow"), "app.always-allow", GLib.Variant("s", token)
         )
         self.send_notification(token, notification)
 
@@ -132,7 +137,7 @@ class Agent(Gio.Application):
         if message == self.last_error:
             return
         self.last_error = message
-        notification = Gio.Notification.new("USB Protection needs attention")
+        notification = Gio.Notification.new(_("USB Protection needs attention"))
         notification.set_body(message)
         self.send_notification("connection-error", notification)
 
@@ -145,6 +150,6 @@ class Agent(Gio.Application):
 
 def main():
     if os.geteuid() == 0:
-        print("The notification agent must run in a user session, not as root.", file=sys.stderr)
+        print(_("The notification agent must run in a user session, not as root."), file=sys.stderr)
         return 1
     return Agent().run(sys.argv)

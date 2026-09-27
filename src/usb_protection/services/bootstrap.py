@@ -14,6 +14,8 @@ import tempfile
 import time
 from pathlib import Path
 
+from ..i18n import _
+
 POLICY = Path("/etc/usbguard/rules.conf")
 CONFIG = Path("/etc/usbguard/usbguard-daemon.conf")
 UNITS = ("usbguard.service", "usbguard-dbus.service")
@@ -31,7 +33,7 @@ def run(argv, **kwargs):
 def secure_file(path):
     info = path.lstat()
     if not stat.S_ISREG(info.st_mode) or info.st_uid != 0 or info.st_mode & 0o022:
-        raise BootstrapError("Configuration must be a root-owned, non-writable regular file.")
+        raise BootstrapError(_("Configuration must be a root-owned, non-writable regular file."))
 
 
 def validate_policy(path, runner=run):
@@ -39,7 +41,7 @@ def validate_policy(path, runner=run):
     if not any(
         line.strip() and not line.lstrip().startswith("#") for line in path.read_text().splitlines()
     ):
-        raise BootstrapError("The policy is empty. Protection was not started.")
+        raise BootstrapError(_("The policy is empty. Protection was not started."))
     runner(
         ["/usr/bin/usbguard-rule-parser", "-f", str(path)],
         stdout=subprocess.DEVNULL,
@@ -53,7 +55,7 @@ def publish_policy(path, generate, validate, owner=0):
     Hard-link publication has atomic visibility without os.replace's clobbering.
     """
     if os.path.lexists(path):
-        raise BootstrapError("A policy already exists. It has not been changed.")
+        raise BootstrapError(_("A policy already exists. It has not been changed."))
     fd, temporary = tempfile.mkstemp(prefix=".usb-protection-", dir=path.parent)
     temporary = Path(temporary)
     try:
@@ -67,13 +69,13 @@ def publish_policy(path, generate, validate, owner=0):
         info = temporary.stat()
         if info.st_uid != owner or stat.S_IMODE(info.st_mode) != 0o600 or info.st_size == 0:
             raise BootstrapError(
-                "Generated policy failed ownership, permission or empty-file checks."
+                _("Generated policy failed ownership, permission or empty-file checks.")
             )
         validate(temporary)
         try:
             os.link(temporary, path, follow_symlinks=False)
         except FileExistsError as exc:
-            raise BootstrapError("A policy already exists. It has not been changed.") from exc
+            raise BootstrapError(_("A policy already exists. It has not been changed.")) from exc
         directory = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY)
         try:
             os.fsync(directory)
@@ -104,15 +106,17 @@ def check_setup_config():
         "DeviceManagerBackend": "uevent",
     }
     if any(values.get(key) != value for key, value in expected.items()):
-        raise BootstrapError("Existing custom USBGuard configuration needs administrator review.")
+        raise BootstrapError(
+            _("Existing custom USBGuard configuration needs administrator review.")
+        )
     folder = values.get("RuleFolder")
     if folder and (folder != "/etc/usbguard/rules.d/" or any(Path(folder).iterdir())):
-        raise BootstrapError("Additional rules already exist. They have not been changed.")
+        raise BootstrapError(_("Additional rules already exist. They have not been changed."))
 
 
 def start_protection():
     if config_values().get("RuleFile") != str(POLICY):
-        raise BootstrapError("A custom policy location requires administrator review.")
+        raise BootstrapError(_("A custom policy location requires administrator review."))
     validate_policy(POLICY)
     run(["/usr/bin/systemctl", "start", *UNITS], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     # The real bridge connects to the daemon on a one-second retry timer.
@@ -151,10 +155,10 @@ def wait_for_bridge(runner=run, sleep=time.sleep):
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     if len(argv) != 1 or argv[0] not in {"initialize", "enable", "disable", "status"}:
-        print("Expected one of: initialize, enable, disable, status", file=sys.stderr)
+        print(_("Expected one of: initialize, enable, disable, status"), file=sys.stderr)
         return 2
     if os.geteuid() != 0:
-        print("Administrator authorization is required.", file=sys.stderr)
+        print(_("Administrator authorization is required."), file=sys.stderr)
         return 1
     os.umask(0o077)
     try:
@@ -168,7 +172,7 @@ def main(argv=None):
             if action == "initialize":
                 parent = POLICY.parent.lstat()
                 if not stat.S_ISDIR(parent.st_mode) or parent.st_uid != 0 or parent.st_mode & 0o022:
-                    raise BootstrapError("The policy directory is not secure.")
+                    raise BootstrapError(_("The policy directory is not secure."))
                 check_setup_config()
 
                 def generate(stream):
@@ -187,7 +191,7 @@ def main(argv=None):
                     ]
                     if not lines or any(not s.startswith("allow ") for s in lines):
                         raise BootstrapError(
-                            "Initial policy must trust currently connected devices."
+                            _("Initial policy must trust currently connected devices.")
                         )
 
                 publish_policy(POLICY, generate, validate)

@@ -3,6 +3,7 @@ import shutil
 import sys
 
 from . import APP_ID
+from .i18n import _
 from .ui.widgets import Adw
 from .ui.window import MainWindow
 
@@ -21,12 +22,16 @@ class Application(Adw.Application):
                 try:
                     Gio.Subprocess.new(["usb-protection-agent"], Gio.SubprocessFlags.NONE)
                 except GLib.Error as exc:
-                    window.toast.add_toast(Adw.Toast(title=f"Could not start notifications: {exc}"))
+                    window.toast.add_toast(
+                        Adw.Toast(
+                            title=_("Could not start notifications: {error}").format(error=exc)
+                        )
+                    )
         window.present()
 
 
 def main():
     if os.geteuid() == 0:
-        print("USB Protection must run in your user session, not as root.", file=sys.stderr)
+        print(_("USB Protection must run in your user session, not as root."), file=sys.stderr)
         return 1
     return Application().run(sys.argv)

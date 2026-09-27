@@ -4,7 +4,15 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>USB Protection</name>
+  <name xml:lang="ja">USB プロテクション</name>
+  <name xml:lang="ko">USB 보호</name>
+  <name xml:lang="zh-CN">USB 保护</name>
+  <name xml:lang="es">Protección USB</name>
   <summary>Manage USB device access with USBGuard</summary>
+  <summary xml:lang="ja">USBGuard で USB デバイスのアクセスを管理</summary>
+  <summary xml:lang="ko">USBGuard로 USB 장치 접근 관리</summary>
+  <summary xml:lang="zh-CN">使用 USBGuard 管理 USB 设备访问权限</summary>
+  <summary xml:lang="es">Gestiona el acceso USB con USBGuard</summary>
   <description>
     <p>Choose which USB devices can connect to your computer using a native desktop interface.</p>
     <p>Allow a device once, remember trusted devices, manage saved rules, and receive notifications when devices need your attention.</p>

@@ -7,6 +7,7 @@ available in Advanced and are never interpreted as an authorization decision.
 import re
 from dataclasses import dataclass
 
+from ..i18n import _
 from .errors import USBGuardError
 
 TOKEN = re.compile(r'"(?:\\.|[^"\\])*"|[{}]|[^\s{}"]+')
@@ -33,13 +34,13 @@ class Rule:
     @classmethod
     def parse(cls, identifier, raw):
         if type(identifier) is not int or not 0 < identifier < 2**32:
-            raise USBGuardError("Invalid rule identifier in USBGuard response.")
+            raise USBGuardError(_("Invalid rule identifier in USBGuard response."))
         if not isinstance(raw, str) or len(raw) > 65536 or "\x00" in raw:
-            raise USBGuardError("Invalid rule in USBGuard response.")
+            raise USBGuardError(_("Invalid rule in USBGuard response."))
         tokens = TOKEN.findall(raw)
         # Reject incomplete strings, but preserve all valid complex syntax verbatim.
         if not tokens:
-            raise USBGuardError("Empty rule in USBGuard response.")
+            raise USBGuardError(_("Empty rule in USBGuard response."))
         quoted = False
         escaped = False
         for char in raw:
@@ -50,7 +51,7 @@ class Rule:
             elif char == '"':
                 quoted = not quoted
         if quoted or tokens[0] not in {"allow", "block", "reject", "match", "device"}:
-            raise USBGuardError("Malformed rule in USBGuard response.")
+            raise USBGuardError(_("Malformed rule in USBGuard response."))
         attrs = {}
         depth = 0
         for index, token in enumerate(tokens[1:], 1):
@@ -74,13 +75,13 @@ class Rule:
     @property
     def name(self):
         return clean_text(
-            self.attributes.get("name") or self.attributes.get("id") or "Unknown device"
+            self.attributes.get("name") or self.attributes.get("id") or _("Unknown device")
         )
 
     @property
     def status(self):
-        return {"allow": "Allowed", "block": "Blocked", "reject": "Rejected"}.get(
-            self.target, "Custom rule"
+        return {"allow": _("Allowed"), "block": _("Blocked"), "reject": _("Rejected")}.get(
+            self.target, _("Custom rule")
         )
 
     def serialize(self):
@@ -89,18 +90,18 @@ class Rule:
 
 def parse_response(response):
     if not isinstance(response, tuple) or len(response) != 1:
-        raise USBGuardError("Invalid USBGuard response.")
+        raise USBGuardError(_("Invalid USBGuard response."))
     rows = response[0]
     if not isinstance(rows, (tuple, list)):
-        raise USBGuardError("Invalid USBGuard device list.")
+        raise USBGuardError(_("Invalid USBGuard device list."))
     result = []
     seen = set()
     for row in rows:
         if not isinstance(row, (tuple, list)) or len(row) != 2:
-            raise USBGuardError("Invalid USBGuard list entry.")
+            raise USBGuardError(_("Invalid USBGuard list entry."))
         rule = Rule.parse(*row)
         if rule.id in seen:
-            raise USBGuardError("Duplicate identifier in USBGuard response.")
+            raise USBGuardError(_("Duplicate identifier in USBGuard response."))
         seen.add(rule.id)
         result.append(rule)
     return result

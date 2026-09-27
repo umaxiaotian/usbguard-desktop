@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Yuma Obata <yuma@obata.me>
 Build-Depends: debhelper-compat (= 13), dh-python, pybuild-plugin-pyproject,
  python3-all, python3-setuptools, python3-pytest, python3-gi,
- gir1.2-gtk-4.0, gir1.2-adw-1 (>= 1.5)
+ gir1.2-gtk-4.0, gir1.2-adw-1 (>= 1.5), gettext
 Standards-Version: 4.7.2
 Rules-Requires-Root: no
 Homepage: https://github.com/umaxiaotian/usbguard-desktop

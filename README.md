@@ -19,6 +19,20 @@ only in a disposable VM with non-USB input and recovery access.
 - System authentication; no passwords handled by the application.
 - Existing policies preserved, including on removal and purge.
 - No telemetry, cloud service, independent filtering engine, or root GUI.
+- Localized interface and notifications in English, Japanese, Korean,
+  Simplified Chinese, and Spanish, selected from the desktop locale.
+
+## Languages
+
+English is the source language. Complete gettext catalogs are included for
+Japanese (`ja`), Korean (`ko`), Simplified Chinese (`zh_CN`), and Spanish
+(`es`). Desktop launcher names and AppStream summaries are localized too.
+Unsupported locales fall back to English. Traditional Chinese is a separate
+translation and is not included yet.
+
+Translators edit `po/LANGUAGE.po`; maintainers regenerate the template with
+`./po/update-pot.sh`. CI checks message format placeholders and fails when a
+required catalog is missing a user-facing Python string.
 
 ## Screenshots
 
@@ -156,7 +170,7 @@ Install build-only dependencies; these do not install or start USBGuard:
 ```bash
 sudo apt install debhelper dh-python pybuild-plugin-pyproject python3-all \
   python3-setuptools python3-build python3-installer python3-pytest python3-gi \
-  gir1.2-gtk-4.0 gir1.2-adw-1 lintian appstream desktop-file-utils xvfb dbus-x11
+  gir1.2-gtk-4.0 gir1.2-adw-1 gettext lintian appstream desktop-file-utils xvfb dbus-x11
 ./scripts/build-deb.sh
 dpkg-deb --info dist/*.deb
 dpkg-deb --contents dist/*.deb
