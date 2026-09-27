@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test-and-package:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install build dependencies without starting USBGuard
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y debhelper dh-python pybuild-plugin-pyproject python3-all \
+            python3-setuptools python3-build python3-installer python3-pytest python3-gi \
+            gir1.2-gtk-4.0 gir1.2-adw-1 lintian appstream desktop-file-utils xvfb dbus-x11
+          python -m pip install ruff build
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+          desktop-file-validate data/*.desktop data/autostart/*.desktop
+          appstreamcli validate --no-net data/*.metainfo.xml
+      - name: Test with system PyGObject and a virtual display
+        run: dbus-run-session -- xvfb-run -a /usr/bin/python3 -m pytest -q
+        env:
+          GTK_A11Y: none
+          GSK_RENDERER: cairo
+      - name: Build Python distribution
+        run: python -m build
+      - name: Build and validate Debian package
+        run: |
+          ./scripts/build-deb.sh
+          dpkg-deb --info dist/*.deb
+          dpkg-deb --contents dist/*.deb
+          lintian --fail-on error dist/*.deb
+      - uses: actions/upload-artifact@v4
+        with:
+          name: usbguard-desktop-deb
+          path: dist/*.deb
+          if-no-files-found: error

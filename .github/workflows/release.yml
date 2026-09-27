@@ -1,0 +1,57 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*'
+permissions:
+  contents: write
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate tag and synchronize versions
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python scripts/release-version.py "$RELEASE_TAG"
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y debhelper dh-python pybuild-plugin-pyproject python3-all \
+            python3-setuptools python3-build python3-installer python3-pytest python3-gi \
+            gir1.2-gtk-4.0 gir1.2-adw-1 lintian appstream desktop-file-utils xvfb dbus-x11
+          python -m pip install ruff build
+      - name: Test and build
+        run: |
+          ruff check .
+          ruff format --check .
+          dbus-run-session -- xvfb-run -a /usr/bin/python3 -m pytest -q
+          desktop-file-validate data/*.desktop data/autostart/*.desktop
+          appstreamcli validate --no-net data/*.metainfo.xml
+          python -m build
+          ./scripts/build-deb.sh
+          dpkg-deb --info dist/*.deb
+          dpkg-deb --contents dist/*.deb
+          lintian --fail-on error dist/*.deb
+          cd dist
+          sha256sum ./*.deb > SHA256SUMS
+        env:
+          GTK_A11Y: none
+          GSK_RENDERER: cairo
+      - name: Create or update release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --verify-tag --title "USB Protection $RELEASE_TAG" \
+              --generate-notes
+          fi
+          gh release upload "$RELEASE_TAG" dist/*.deb dist/SHA256SUMS --clobber
