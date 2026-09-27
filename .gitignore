@@ -17,4 +17,3 @@ debian/usbguard-desktop/
 *.changes
 .env
 .env.*
-

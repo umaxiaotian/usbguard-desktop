@@ -55,3 +55,19 @@ Live system-bus introspection and hardware authorization were deliberately
 not attempted against a newly started daemon on this development host.
 The protocol above is derived from the exact Ubuntu package/source, not
 guessed from older online documentation.
+
+## Isolated live introspection
+
+The extracted Ubuntu `usbguard-dbus --session` binary was subsequently run
+inside a fresh `dbus-run-session` bus, with **no USBGuard daemon** running.
+`busctl --user tree org.usbguard1` and introspection of all three actual paths
+confirmed the interfaces and signatures listed above. This exercises the real
+bridge's exported API without changing any kernel USB authorization state.
+
+## Ubuntu 24.04 package cross-check
+
+The archive package `usbguard_1.1.2+ds-6build2_amd64.deb` was also downloaded
+and extracted. It includes `/usr/bin/usbguard-rule-parser`, the same
+`org.usbguard1` activation file and bridge executable. Its postinst also generates
+policy and starts services. This confirms the packaging limitation is not
+specific to the 26.04 host; it does not substitute for running a 24.04 desktop.
