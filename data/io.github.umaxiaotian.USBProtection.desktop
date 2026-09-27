@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=USB Protection
+Comment=Manage USB device access
+Exec=usb-protection
+Icon=io.github.umaxiaotian.USBProtection
+Terminal=false
+Categories=Settings;Security;
+Keywords=USB;Security;Devices;USBGuard;
+StartupNotify=true

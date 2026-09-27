@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.umaxiaotian.USBProtection</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>USB Protection</name>
+  <summary>Manage USB device access with USBGuard</summary>
+  <description>
+    <p>Choose which USB devices can connect to your computer using a native desktop interface.</p>
+    <p>Allow a device once, remember trusted devices, manage saved rules, and receive notifications when devices need your attention.</p>
+  </description>
+  <developer id="io.github.umaxiaotian"><name>Yuma Obata</name></developer>
+  <launchable type="desktop-id">io.github.umaxiaotian.USBProtection.desktop</launchable>
+  <url type="homepage">https://github.com/umaxiaotian/usbguard-desktop</url>
+  <url type="bugtracker">https://github.com/umaxiaotian/usbguard-desktop/issues</url>
+  <url type="vcs-browser">https://github.com/umaxiaotian/usbguard-desktop</url>
+  <provides><binary>usb-protection</binary></provides>
+  <content_rating type="oars-1.1"/>
+  <!-- Screenshot structure for a verified release capture:
+  <screenshots>
+    <screenshot type="default">
+      <caption>Connected devices and protection status</caption>
+      <image type="source" width="1280" height="900">PUBLISHED_SCREENSHOT_URL</image>
+    </screenshot>
+  </screenshots>
+  -->
+  <releases><release version="0.1.0" date="2026-09-27">
+    <description><p>Initial desktop interface, notification agent, and Debian packaging.</p></description>
+  </release></releases>
+</component>

@@ -1,0 +1,13 @@
+.TH USB-PROTECTION-AGENT 1 "September 2026" "USB Protection 0.1.0" "User Commands"
+.SH NAME
+usb-protection-agent \- display notifications for blocked USB devices
+.SH SYNOPSIS
+.B usb-protection-agent
+.SH DESCRIPTION
+Watches USBGuard device events in the current user session and displays
+notifications with Allow Once and Always Allow actions.
+The agent starts via XDG Autostart at login and when the application opens.
+Only one agent runs per session. Never run this command as root.
+.SH SEE ALSO
+.BR usb-protection (1),
+.BR usbguard (1)

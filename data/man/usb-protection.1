@@ -1,0 +1,19 @@
+.TH USB-PROTECTION 1 "September 2026" "USB Protection 0.1.0" "User Commands"
+.SH NAME
+usb-protection \- manage USB device access from the desktop
+.SH SYNOPSIS
+.B usb-protection
+.SH DESCRIPTION
+USB Protection is a GTK4 and Libadwaita interface for USBGuard.
+It lists connected devices and provides temporary and persistent allow
+operations, blocking, and saved rule management.
+Run it in an ordinary graphical user session, never as root.
+Administrative operations use the system authentication agent.
+.SH FILES
+.I /etc/usbguard/rules.conf
+.RS
+Existing USBGuard policy, preserved by installation and removal.
+.RE
+.SH SEE ALSO
+.BR usbguard (1),
+.BR usb-protection-agent (1)

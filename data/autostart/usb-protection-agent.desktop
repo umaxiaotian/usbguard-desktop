@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=USB Protection Notifications
+Comment=Notify about blocked USB devices
+Exec=usb-protection-agent
+Icon=io.github.umaxiaotian.USBProtection
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true

@@ -1,0 +1,25 @@
+Source: usbguard-desktop
+Section: utils
+Priority: optional
+Maintainer: Yuma Obata <yuma@obata.me>
+Build-Depends: debhelper-compat (= 13), dh-python, pybuild-plugin-pyproject,
+ python3-all, python3-setuptools, python3-pytest, python3-gi,
+ gir1.2-gtk-4.0, gir1.2-adw-1 (>= 1.5)
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+Homepage: https://github.com/umaxiaotian/usbguard-desktop
+Vcs-Git: https://github.com/umaxiaotian/usbguard-desktop.git
+Vcs-Browser: https://github.com/umaxiaotian/usbguard-desktop
+
+Package: usbguard-desktop
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}, python3:any (>= 3.12), usbguard (>= 1.1.2),
+ python3-gi, gir1.2-gtk-4.0 (>= 4.12), gir1.2-adw-1 (>= 1.5),
+ pkexec, polkitd, systemd, dbus
+Description: desktop interface for managing USB device access with USBGuard
+ USB Protection provides a native GTK4 and Libadwaita interface for
+ reviewing connected USB devices, allowing trusted devices, managing saved
+ rules, and receiving notifications about blocked devices.
+ .
+ Device authorization is handled by USBGuard. The desktop application and
+ notification agent run without root privileges.

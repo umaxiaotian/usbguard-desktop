@@ -1,0 +1,6 @@
+data/*.desktop usr/share/applications/
+data/*.metainfo.xml usr/share/metainfo/
+data/icons/io.github.umaxiaotian.USBProtection.svg usr/share/icons/hicolor/scalable/apps/
+data/icons/io.github.umaxiaotian.USBProtection-symbolic.svg usr/share/icons/hicolor/symbolic/apps/
+data/autostart/*.desktop etc/xdg/autostart/
+data/polkit/*.policy usr/share/polkit-1/actions/
