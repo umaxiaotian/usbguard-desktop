@@ -131,3 +131,20 @@ def test_enable_sequence(monkeypatch):
     monkeypatch.setattr(b, "run", lambda argv, **kwargs: calls.append(argv[1]))
     b.start_protection()
     assert calls == ["validate", "start", "bridge", "enable"]
+
+
+def test_service_start_failure_does_not_enable(monkeypatch):
+    import subprocess
+
+    calls = []
+    monkeypatch.setattr(b, "config_values", lambda: {"RuleFile": str(b.POLICY)})
+    monkeypatch.setattr(b, "validate_policy", lambda _: None)
+
+    def fail(argv, **kwargs):
+        calls.append(argv[1])
+        raise subprocess.CalledProcessError(1, argv, stderr=b"Service failed")
+
+    monkeypatch.setattr(b, "run", fail)
+    with pytest.raises(subprocess.CalledProcessError):
+        b.start_protection()
+    assert calls == ["start"]

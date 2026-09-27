@@ -17,6 +17,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.service = ProtectionService()
         self.closed = False
         self.busy = False
+        self.refreshing = False
         self.generation = 0
         self.toast = Adw.ToastOverlay()
         toolbar = Adw.ToolbarView()
@@ -50,12 +51,14 @@ class MainWindow(Adw.ApplicationWindow):
         self.page.add(group)
 
     def refresh(self):
-        if self.closed or self.busy:
+        if self.closed or self.busy or self.refreshing:
             return
+        self.refreshing = True
         self.generation += 1
         generation = self.generation
 
         def status(state):
+            self.refreshing = False
             if self.closed or generation != self.generation or self.busy:
                 return
             for group in self.groups:

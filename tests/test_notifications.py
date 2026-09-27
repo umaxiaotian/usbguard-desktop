@@ -51,3 +51,32 @@ def test_reused_identifier_withdraws_old_identity():
     assert len(sent) == 2
     assert withdrawn == [sent[0][0]]
     assert len(router.pending) == 1
+
+
+def test_agent_reconnects_after_system_bus_loss(monkeypatch):
+    from usb_protection.agent.application import Agent
+
+    agent = Agent()
+    agent.ready = True
+
+    class DisconnectedProxy:
+        def get_connection(self):
+            return self
+
+        def is_closed(self):
+            return True
+
+    agent.client.proxies["devices"] = DisconnectedProxy()
+    reconnects = []
+    monkeypatch.setattr(agent, "reconnect", lambda: reconnects.append(True))
+    assert agent.poll()
+    assert reconnects == [True]
+
+
+def test_root_entrypoints_refuse(monkeypatch):
+    from usb_protection import application
+    from usb_protection.agent import application as agent
+
+    monkeypatch.setattr(application.os, "geteuid", lambda: 0)
+    assert application.main() == 1
+    assert agent.main() == 1

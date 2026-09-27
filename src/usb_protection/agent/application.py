@@ -20,6 +20,7 @@ class Agent(Gio.Application):
         )
         self.last_error = None
         self.ready = False
+        self.connecting = False
         self.polling = False
 
     def do_startup(self):
@@ -31,6 +32,7 @@ class Agent(Gio.Application):
             self.add_action(action)
         self.client.listeners.append(self.event)
         self.client.owner_listeners.append(self.owner_changed)
+        self.connecting = True
         self.client.connect(self.connected)
         self.timer = GLib.timeout_add_seconds(15, self.poll)
 
@@ -39,18 +41,41 @@ class Agent(Gio.Application):
         pass
 
     def connected(self, error):
+        self.connecting = False
         self.ready = not error
         if error:
             self.error(str(error))
         else:
             self.poll()
 
-    def owner_changed(self, _owner):
+    def owner_changed(self, owner):
         self.router.clear()
+        if not owner:
+            self.error(
+                "Device notifications are disconnected. Open USB Protection to check status."
+            )
         self.poll()
 
+    def reconnect(self):
+        self.router.clear()
+        self.client.close()
+        self.client = USBGuardClient()
+        self.router.client = self.client
+        self.client.listeners.append(self.event)
+        self.client.owner_listeners.append(self.owner_changed)
+        self.ready = False
+        self.polling = False
+        self.connecting = True
+        self.client.connect(self.connected)
+
     def poll(self):
-        if not self.ready or not self.client.owner or self.polling:
+        if self.connecting:
+            return True
+        proxy = self.client.proxies.get("devices")
+        if not self.ready or (proxy and proxy.get_connection().is_closed()):
+            self.reconnect()
+            return True
+        if not self.client.owner or self.polling:
             return True
         self.polling = True
 
@@ -60,6 +85,7 @@ class Agent(Gio.Application):
                 self.error(str(error))
                 return
             self.last_error = None
+            self.withdraw_notification("connection-error")
             ids = {device.id for device in devices if device.rule.target == "block"}
             for _owner, device in tuple(self.router.pending.values()):
                 if device.id not in ids:

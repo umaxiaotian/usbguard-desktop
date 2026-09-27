@@ -114,3 +114,9 @@ def test_unknown_metadata():
     device = Device(Rule.parse(1, 'block name "\n"'))
     assert device.name == "�"
     assert all(value == "Unknown" for _, value in device.metadata())
+
+
+@pytest.mark.parametrize("response", [(), (None,), (1,), ("block", "allow")])
+def test_invalid_parameter_response(response):
+    with pytest.raises(USBGuardError):
+        USBGuardClient._parameter(response)

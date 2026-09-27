@@ -89,7 +89,7 @@ class USBGuardClient:
                 if source.get_name_owner() != owner:
                     raise USBGuardError("USBGuard restarted. Refresh and try again.")
                 value = parser(response)
-            except (GLib.Error, USBGuardError, TypeError, ValueError) as exc:
+            except (GLib.Error, USBGuardError, TypeError, ValueError, IndexError) as exc:
                 callback(None, friendly_error(exc))
             else:
                 callback(value, None)
@@ -126,8 +126,14 @@ class USBGuardClient:
             "(s)",
             ("ImplicitPolicyTarget",),
             callback,
-            lambda value: value[0],
+            self._parameter,
         )
+
+    @staticmethod
+    def _parameter(value):
+        if not isinstance(value, tuple) or len(value) != 1 or not isinstance(value[0], str):
+            raise USBGuardError("Invalid setting response from USBGuard.")
+        return value[0]
 
     def apply(self, device, action, callback, expected_owner=None):
         options = {
