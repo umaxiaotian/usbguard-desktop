@@ -168,7 +168,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for safety and contribution guidelines.
 Install build-only dependencies; these do not install or start USBGuard:
 
 ```bash
-sudo apt install debhelper dh-python pybuild-plugin-pyproject python3-all \
+sudo apt install build-essential debhelper dh-python pybuild-plugin-pyproject python3-all \
   python3-setuptools python3-build python3-installer python3-pytest python3-gi \
   gir1.2-gtk-4.0 gir1.2-adw-1 gettext lintian appstream desktop-file-utils xvfb dbus-x11
 ./scripts/build-deb.sh
