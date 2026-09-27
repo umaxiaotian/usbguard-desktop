@@ -44,7 +44,8 @@ class ProtectionService:
         try:
             configured = os.path.lexists("/etc/usbguard/rules.conf")
             # Never interpret an inaccessible parent directory as a missing policy.
-            Path("/etc/usbguard").stat() if installed else None
+            if installed and not os.access("/etc/usbguard", os.X_OK):
+                configured = True
         except OSError:
             configured = True
 

@@ -79,3 +79,55 @@ def test_parser_is_upstream(tmp_path, monkeypatch):
     calls = []
     b.validate_policy(policy, lambda argv, **kwargs: calls.append(argv))
     assert calls == [["/usr/bin/usbguard-rule-parser", "-f", str(policy)]]
+
+
+def test_bridge_startup_wait():
+    import subprocess
+
+    calls = []
+    sleeps = []
+
+    def runner(argv, **kwargs):
+        calls.append(argv)
+        if len(calls) < 3:
+            raise subprocess.CalledProcessError(1, argv)
+
+    b.wait_for_bridge(runner, sleeps.append)
+    assert len(calls) == 3 and sleeps == [1, 1]
+    assert all("listDevices" in call for call in calls)
+
+
+def test_bridge_failure_bounded():
+    import subprocess
+
+    def runner(argv, **kwargs):
+        raise subprocess.CalledProcessError(1, argv)
+
+    sleeps = []
+    with pytest.raises(subprocess.CalledProcessError):
+        b.wait_for_bridge(runner, sleeps.append)
+    assert sleeps == [1, 1, 1, 1]
+
+
+def test_enable_validates_before_start(monkeypatch):
+    calls = []
+    monkeypatch.setattr(b, "config_values", lambda: {"RuleFile": str(b.POLICY)})
+
+    def invalid(_):
+        raise b.BootstrapError("corrupted policy")
+
+    monkeypatch.setattr(b, "validate_policy", invalid)
+    monkeypatch.setattr(b, "run", lambda *args, **kwargs: calls.append(args))
+    with pytest.raises(b.BootstrapError):
+        b.start_protection()
+    assert not calls
+
+
+def test_enable_sequence(monkeypatch):
+    calls = []
+    monkeypatch.setattr(b, "config_values", lambda: {"RuleFile": str(b.POLICY)})
+    monkeypatch.setattr(b, "validate_policy", lambda _: calls.append("validate"))
+    monkeypatch.setattr(b, "wait_for_bridge", lambda: calls.append("bridge"))
+    monkeypatch.setattr(b, "run", lambda argv, **kwargs: calls.append(argv[1]))
+    b.start_protection()
+    assert calls == ["validate", "start", "bridge", "enable"]

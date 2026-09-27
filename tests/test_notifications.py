@@ -39,3 +39,15 @@ def test_unplug_withdraws():
     router.activate(sent[0][0], "allow-once", lambda *_: None)
     assert withdrawn == [sent[0][0]]
     assert not client.calls
+
+
+def test_reused_identifier_withdraws_old_identity():
+    from usb_protection.usbguard.device import Device
+    from usb_protection.usbguard.rule import Rule
+
+    client, router, sent, withdrawn = setup()
+    router.offer(client.devices[0])
+    router.offer(Device(Rule.parse(7, 'block hash "different"')))
+    assert len(sent) == 2
+    assert withdrawn == [sent[0][0]]
+    assert len(router.pending) == 1

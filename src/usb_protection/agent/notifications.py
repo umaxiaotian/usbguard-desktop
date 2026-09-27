@@ -14,10 +14,12 @@ class NotificationRouter:
     def offer(self, device):
         if device.rule.target != "block" or not device.identity or not self.client.owner:
             return
-        for _token, (owner, current) in self.pending.items():
+        for _token, (owner, current) in tuple(self.pending.items()):
             if owner == self.client.owner and current.id == device.id:
                 if current.identity == device.identity:
                     return
+                self.remove(device.id)
+                break
         token = uuid.uuid4().hex
         self.pending[token] = (self.client.owner, device)
         self.send(token, device)

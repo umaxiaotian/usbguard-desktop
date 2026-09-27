@@ -11,6 +11,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 POLICY = Path("/etc/usbguard/rules.conf")
@@ -114,25 +115,37 @@ def start_protection():
         raise BootstrapError("A custom policy location requires administrator review.")
     validate_policy(POLICY)
     run(["/usr/bin/systemctl", "start", *UNITS], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    # Tests the bridge AND its connection to the daemon; never modifies a device.
-    run(
-        [
-            "/usr/bin/busctl",
-            "--system",
-            "--auto-start=no",
-            "--timeout=10",
-            "call",
-            "org.usbguard1",
-            "/org/usbguard1/Devices",
-            "org.usbguard.Devices1",
-            "listDevices",
-            "s",
-            "match",
-        ],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.PIPE,
-    )
+    # The real bridge connects to the daemon on a one-second retry timer.
+    # A registered bus name alone does not mean it is ready for requests.
+    wait_for_bridge()
     run(["/usr/bin/systemctl", "enable", *UNITS], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+
+def wait_for_bridge(runner=run, sleep=time.sleep):
+    for attempt in range(5):
+        try:
+            runner(
+                [
+                    "/usr/bin/busctl",
+                    "--system",
+                    "--auto-start=no",
+                    "--timeout=3",
+                    "call",
+                    "org.usbguard1",
+                    "/org/usbguard1/Devices",
+                    "org.usbguard.Devices1",
+                    "listDevices",
+                    "s",
+                    "match",
+                ],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+            )
+            return
+        except subprocess.CalledProcessError:
+            if attempt == 4:
+                raise
+            sleep(1)
 
 
 def main(argv=None):
