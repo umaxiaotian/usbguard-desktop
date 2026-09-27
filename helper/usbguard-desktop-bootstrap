@@ -1,0 +1,4 @@
+#!/usr/bin/python3 -I
+from usb_protection.services.bootstrap import main
+
+raise SystemExit(main())
